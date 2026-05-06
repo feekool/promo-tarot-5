@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#2a5d5a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Feekool для Тарологов — Создайте школу. Объедините учеников.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #fcfaf6;
+            --bg-card: #ffffff;
+            --primary: #2a5d5a;
+            --primary-light: #3a7d7a;
+            --primary-dark: #1a423f;
+            --accent: #d4956a;
+            --accent-light: #e8b89a;
+            --text-main: #1c2321;
+            --text-secondary: #4a5552;
+            --text-muted: #7a8582;
+            --border: rgba(42, 93, 90, 0.15);
+            --shadow: 0 4px 20px rgba(42, 93, 90, 0.06);
+            --shadow-hover: 0 8px 32px rgba(42, 93, 90, 0.12);
+            --gradient-main: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            --radius: 18px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            font-size: clamp(14px, 1.8vw, 16px);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 8% 92%, rgba(212, 149, 106, 0.12) 0%, transparent 30%),
+                radial-gradient(circle at 92% 8%, rgba(42, 93, 90, 0.1) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container { max-width: 1160px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 24px); position: relative; }
+
+        /* ========== HEADER ========== */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: clamp(14px, 2.5vw, 20px) 0;
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(252, 250, 246, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            background: var(--gradient-main);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.3rem;
+            box-shadow: 0 4px 12px rgba(42, 93, 90, 0.3);
+        }
+        .logo-text strong { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.3rem, 3.5vw, 1.6rem); font-weight: 600; color: var(--primary); }
+        .logo-text span { display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+        .nav-links { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: clamp(10px, 2.5vw, 12px) clamp(18px, 4vw, 24px);
+            border-radius: 50px; font-weight: 600; font-size: clamp(0.9rem, 2.8vw, 1rem);
+            text-decoration: none; transition: var(--transition); cursor: pointer; border: none;
+            min-height: 44px; white-space: nowrap;
+        }
+        .btn-primary { background: var(--gradient-main); color: white; box-shadow: 0 4px 14px rgba(42, 93, 90, 0.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(42, 93, 90, 0.35); }
+        .btn-accent { background: var(--gradient-accent); color: white; box-shadow: 0 4px 14px rgba(212, 149, 106, 0.25); }
+        .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212, 149, 106, 0.35); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: rgba(42, 93, 90, 0.05); border-color: var(--primary-light); transform: translateY(-2px); }
+        .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); padding: 8px 16px; font-size: 0.9rem; }
+        .btn-ghost:hover { background: white; border-color: var(--primary); color: var(--primary); }
+        .btn-full { width: 100%; max-width: 320px; }
+
+        /* ========== HERO ========== */
+        .hero { padding: clamp(60px, 12vw, 100px) 0 clamp(40px, 8vw, 60px); text-align: center; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 14px; background: rgba(42, 93, 90, 0.1); border: 1px solid var(--primary);
+            border-radius: 50px; font-size: 0.85rem; font-weight: 500; color: var(--primary-light);
+            margin-bottom: clamp(18px, 4vw, 28px);
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 7vw, 3.6rem); font-weight: 600; line-height: 1.15;
+            margin-bottom: clamp(18px, 4vw, 28px);
+        }
+        .hero h1 .hl { color: var(--primary-light); }
+        .hero p {
+            font-size: clamp(1rem, 3.2vw, 1.2rem); color: var(--text-secondary);
+            max-width: 740px; margin: 0 auto clamp(28px, 5vw, 36px); line-height: 1.7;
+        }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: clamp(32px, 6vw, 48px); }
+        .hero-stats {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(20px, 4vw, 40px);
+            padding-top: clamp(24px, 5vw, 32px); border-top: 1px solid var(--border);
+        }
+        .stat-item { text-align: center; }
+        .stat-val { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 600; color: var(--primary); }
+        .stat-lbl { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+        /* ========== SECTIONS ========== */
+        .section { padding: clamp(60px, 12vw, 100px) 0; }
+        .section-header { text-align: center; max-width: 720px; margin: 0 auto clamp(40px, 8vw, 56px); }
+        .tag {
+            display: inline-block; padding: 5px 14px; background: rgba(42, 93, 90, 0.1);
+            border-radius: 50px; font-size: 0.85rem; color: var(--primary-light);
+            margin-bottom: 14px; font-weight: 500;
+        }
+        .h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 600; margin-bottom: clamp(14px, 3vw, 20px); }
+        .desc { color: var(--text-secondary); font-size: clamp(1rem, 3vw, 1.1rem); line-height: 1.7; }
+
+        /* ========== GRIDS ========== */
+        .g2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(20px, 4vw, 28px); }
+        .g3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(20px, 4vw, 28px); }
+        .g4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: clamp(16px, 3vw, 24px); }
+
+        .card {
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: clamp(22px, 5vw, 28px) clamp(18px, 4vw, 24px);
+            border: 1px solid var(--border); transition: var(--transition);
+            position: relative; overflow: hidden;
+        }
+        .card::after {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: var(--gradient-accent); transform: scaleX(0); transition: transform 0.3s ease;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
+        .card:hover::after { transform: scaleX(1); }
+        .card-icon { font-size: clamp(1.6rem, 5vw, 2rem); margin-bottom: 14px; }
+        .card h3 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.2rem, 3.5vw, 1.45rem); font-weight: 600; margin-bottom: 10px; }
+        .card p { color: var(--text-secondary); font-size: clamp(0.9rem, 2.8vw, 1rem); line-height: 1.65; margin-bottom: 18px; }
+        .card-link { display: inline-flex; align-items: center; gap: 6px; color: var(--primary-light); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: gap 0.2s ease; }
+        .card-link:hover { gap: 10px; }
+
+        /* ========== FORMATS ========== */
+        .format-card {
+            background: rgba(42, 93, 90, 0.04); border: 1px solid var(--border);
+            border-radius: 16px; padding: clamp(20px, 4vw, 24px); text-align: center;
+            transition: var(--transition);
+        }
+        .format-card:hover { background: white; transform: translateY(-3px); box-shadow: var(--shadow); }
+        .f-icon { font-size: 1.8rem; margin-bottom: 10px; }
+        .format-card h4 { font-weight: 600; margin-bottom: 6px; }
+        .format-card p { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
+
+        /* ========== STEPS ========== */
+        .steps-box {
+            background: white; border-radius: 20px; padding: clamp(28px, 5vw, 40px);
+            border: 1px solid var(--border); box-shadow: var(--shadow);
+        }
+        .steps-list { counter-reset: step; display: flex; flex-direction: column; gap: clamp(24px, 5vw, 32px); }
+        .step { display: flex; gap: clamp(16px, 3vw, 22px); align-items: flex-start; }
+        .s-num {
+            flex-shrink: 0; width: 44px; height: 44px; background: var(--gradient-main);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600;
+        }
+        .step h4 { font-weight: 600; margin-bottom: 6px; }
+        .step p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .step a { color: var(--primary-light); text-decoration: none; font-weight: 500; }
+        .step a:hover { text-decoration: underline; }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials-box {
+            background: linear-gradient(135deg, rgba(42, 93, 90, 0.06), rgba(252, 250, 246, 0.9));
+            border-radius: 20px; padding: clamp(24px, 5vw, 36px); border: 1px solid var(--border);
+        }
+        .t-card { background: white; border-radius: 16px; padding: clamp(20px, 4vw, 24px); margin-bottom: 16px; border: 1px solid var(--border); }
+        .t-card:last-child { margin-bottom: 0; }
+        .t-quote {
+            font-family: 'Cormorant Garamond', serif; font-size: clamp(1.05rem, 3.5vw, 1.2rem);
+            font-style: italic; line-height: 1.7; color: var(--text-main); margin-bottom: 16px;
+            position: relative; padding-left: 20px;
+        }
+        .t-quote::before {
+            content: """; position: absolute; left: 0; top: -6px;
+            font-size: 2.8rem; color: var(--accent); opacity: 0.35; font-family: serif;
+        }
+        .author { display: flex; align-items: center; gap: 10px; }
+        .avatar {
+            width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-main);
+            color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.1rem;
+        }
+        .author strong { display: block; font-weight: 600; }
+        .author span { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* ========== CTA ========== */
+        .cta-box {
+            background: var(--gradient-main); border-radius: 22px;
+            padding: clamp(40px, 8vw, 60px) clamp(24px, 5vw, 36px);
+            text-align: center; color: white; margin: clamp(40px, 8vw, 60px) 0;
+            position: relative; overflow: hidden;
+        }
+        .cta-box::before {
+            content: ""; position: absolute; inset: -40%;
+            background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
+            animation: breathe 10s ease-in-out infinite; pointer-events: none;
+        }
+        @keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .cta-box h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 600; margin-bottom: 16px; position: relative; }
+        .cta-box p { font-size: clamp(1rem, 3vw, 1.15rem); max-width: 680px; margin: 0 auto 28px; opacity: 0.95; position: relative; }
+        .cta-actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; position: relative; }
+        .cta-box .btn-outline { border-color: rgba(255,255,255,0.6); color: white; }
+        .cta-box .btn-outline:hover { background: rgba(255,255,255,0.15); }
+
+        /* ========== FOOTER ========== */
+        footer {
+            padding: clamp(40px, 8vw, 56px) 0 clamp(24px, 5vw, 32px);
+            text-align: center; border-top: 1px solid var(--border);
+            color: var(--text-muted); font-size: clamp(0.9rem, 2.5vw, 0.95rem); line-height: 1.7;
+        }
+        footer a { color: var(--primary-light); text-decoration: none; font-weight: 600; }
+        footer a:hover { text-decoration: underline; }
+        .f-links { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(16px, 3vw, 24px); margin: clamp(20px, 4vw, 28px) 0; }
+        .f-links a { color: var(--text-secondary); transition: color 0.2s ease; }
+        .f-links a:hover { color: var(--primary); }
+
+        /* ========== MOBILE CTA ========== */
+        .m-cta {
+            display: none; position: fixed; bottom: clamp(14px, 3vw, 20px);
+            left: clamp(14px, 3vw, 20px); right: clamp(14px, 3vw, 20px);
+            z-index: 999; padding: 10px; background: white; border-radius: 14px;
+            border: 1px solid var(--border); box-shadow: var(--shadow-hover);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .m-cta .btn { width: 100%; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 12px; text-align: center; }
+            .nav-links { justify-content: center; }
+            .hero-actions, .cta-actions { flex-direction: column; align-items: center; }
+            .hero-actions .btn, .cta-actions .btn { width: 100%; max-width: 300px; }
+            .step { flex-direction: column; align-items: center; text-align: center; }
+            .f-links { flex-direction: column; gap: 10px; }
+        }
+        @media (max-width: 768px) { .m-cta { display: block; } .h-m { display: none; } }
+        @media (min-width: 769px) { .s-m { display: none; } }
+
+        /* Accessibility */
+        .btn:focus, a:focus { outline: 2px solid var(--primary-light); outline-offset: 3px; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+            html { scroll-behavior: auto; }
+        }
+        .tc { text-align: center; } .mt-32 { margin-top: 32px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <nav class="navbar" aria-label="Навигация">
+            <a href="#" class="logo">
+                <div class="logo-icon">🌙</div>
+                <div class="logo-text"><strong>Feekool Academy</strong><span>платформа для обучения таро</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="https://feekool.github.io/tarot-school" target="_blank" class="btn btn-ghost h-m">👁️ Демо</a>
+                <a href="#contact" class="btn btn-primary">✉️ Начать</a>
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-badge">📖 Пространство для наставников</div>
+            <h1 id="hero-title">Создайте школу. <span class="hl">Объедините учеников.</span><br>Без лишних затрат</h1>
+            <p>Feekool — это готовая экосистема для тарологов-преподавателей. Проводите курсы, делитесь материалами, ведёте живое комьюнити. Всё работает на GitHub Pages — надёжно, бесплатно, без кода.</p>
+            <div class="hero-actions">
+                <a href="https://feekool.github.io/tarot-school" target="_blank" class="btn btn-primary btn-full">👁️ Смотреть демо</a>
+                <a href="#setup" class="btn btn-outline btn-full">📦 Установить за 5 минут</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item"><div class="stat-val">0 ₽</div><div class="stat-lbl">базовая версия</div></div>
+                <div class="stat-item"><div class="stat-val">∞</div><div class="stat-lbl">возможностей кастомизации</div></div>
+                <div class="stat-item"><div class="stat-val">1 день</div><div class="stat-lbl">на запуск и наполнение</div></div>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="section" aria-labelledby="feat-title">
+            <div class="section-header">
+                <span class="tag">Для преподавателей</span>
+                <h2 id="feat-title" class="h2">Почему наставники выбирают Feekool</h2>
+                <p class="desc">Техническая инфраструктура уже настроена. Вы занимаетесь тем, что любите — делитесь знаниями и растёте вместе с учениками.</p>
+            </div>
+            <div class="g2">
+                <article class="card">
+                    <div class="card-icon">📚</div><h3>Модульная структура</h3>
+                    <p>Разбивайте программу на уровни. Каждый урок — отдельный раздел с теорией, практикой и файлами для скачивания. Ученики движутся по чёткому пути.</p>
+                    <a href="https://feekool.github.io/tarot-school" target="_blank" class="card-link">Как выглядит структура →</a>
+                </article>
+                <article class="card">
+                    <div class="card-icon">💬</div><h3>Единый диалог</h3>
+                    <p>Вопросы, разбор раскладов, обсуждение домашних заданий — всё в тематических ветках форума. История сохраняется, новые ученики легко вливаются.</p>
+                    <a href="https://feekool.github.io/tarot-school" target="_blank" class="card-link">Демо форума →</a>
+                </article>
+                <article class="card">
+                    <div class="card-icon">🔐</div><h3>Гибкий доступ</h3>
+                    <p>Открытые уроки для привлечения, закрытые модули для платных групп, отдельные разделы для выпускников. Контролируйте видимость в пару кликов.</p>
+                    <a href="https://feekool.github.io/tarot-school" target="_blank" class="card-link">Настройка доступа →</a>
+                </article>
+                <article class="card">
+                    <div class="card-icon">📊</div><h3>Прозрачность прогресса</h3>
+                    <p>Видите активность группы: кто прошёл модуль, кто застрял, кто уже задаёт глубокие вопросы. Меньше микроменеджмента, больше наставничества.</p>
+                    <a href="https://feekool.github.io/tarot-school" target="_blank" class="card-link">Отслеживание →</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- FORMATS -->
+        <section class="section" aria-labelledby="fmt-title">
+            <div class="section-header">
+                <span class="tag">Форматы работы</span>
+                <h2 id="fmt-title" class="h2">Под любой стиль преподавания</h2>
+                <p class="desc">Адаптируйте платформу под вашу методологию, колоду и аудиторию.</p>
+            </div>
+            <div class="g4">
+                <div class="format-card"><div class="f-icon">🌱</div><h4>Базовый курс</h4><p>22 Аркана, символика, первые расклады</p></div>
+                <div class="format-card"><div class="f-icon">🔍</div><h4>Интуитивный поток</h4><p>Чувствование, медитации, работа без учебников</p></div>
+                <div class="format-card"><div class="f-icon">👥</div><h4>Групповая супервизия</h4><p>Разбор кейсов, этика, работа с клиентами</p></div>
+                <div class="format-card"><div class="f-icon">📅</div><h4>Закрытый клуб</h4><p>Подписка, ежемесячные темы, живые встречи</p></div>
+            </div>
+            <p class="tc mt-32" style="color: var(--text-secondary);">
+                🎨 Хотите дизайн под вашу колоду или фирменный стиль? <a href="https://github.com/feekool/feekool.github.io/issues" target="_blank">Закажите адаптацию</a> — настроим визуал под вашу энергетику.
+            </p>
+        </section>
+
+        <!-- SETUP -->
+        <section class="section" id="setup" aria-labelledby="setup-title">
+            <div class="section-header">
+                <span class="tag">Быстрый старт</span>
+                <h2 id="setup-title" class="h2">Запуск школы за 4 шага</h2>
+                <p class="desc">Не нужно быть программистом. Инструкция написана для людей, которые работают с картами, а не с серверами.</p>
+            </div>
+            <div class="steps-box">
+                <ol class="steps-list">
+                    <li class="step"><div class="s-num">1</div><div><h4>Регистрация</h4><p>Создайте аккаунт на <a href="https://github.com" target="_blank">github.com</a>. Это бесплатно и занимает 2 минуты.</p></div></li>
+                    <li class="step"><div class="s-num">2</div><div><h4>Шаблон</h4><p>Откройте <a href="https://github.com/feekool/feekool.github.io" target="_blank">github.com/feekool/feekool.github.io</a> и нажмите <code>Use this template</code>.</p></div></li>
+                    <li class="step"><div class="s-num">3</div><div><h4>Наполнение</h4><p>Загрузите свои уроки, добавьте логотип, задайте цвета бренда. Создайте ветки форума под темы курса.</p></div></li>
+                    <li class="step"><div class="s-num">4</div><div><h4>Публикация</h4><p>Включите GitHub Pages в настройках репозитория. Через минуту платформа доступна по ссылке. Принимайте учеников.</p></div></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="section" aria-labelledby="test-title">
+            <div class="section-header">
+                <span class="tag">Опыт коллег</span>
+                <h2 id="test-title" class="h2">Слова тех, кто уже запустил</h2>
+                <p class="desc">Реальные отзывы преподавателей, которые перешли с хаоса мессенджеров на структурированную платформу.</p>
+            </div>
+            <div class="testimonials-box">
+                <div class="t-card">
+                    <p class="t-quote">Теперь мой курс — это не архив голосовых в Телеграме, а живой организм. Ученики задают вопросы в нужный раздел, я отвечаю в своём ритме. Пропало ощущение, что я на работе 24/7.</p>
+                    <div class="author"><div class="avatar">М</div><div><strong>Марина В.</strong><span>Таролог-наставник, 3 потока</span></div></div>
+                </div>
+                <div class="t-card">
+                    <p class="t-quote">Загрузила PDF, видео и задания за вечер. Форум подтянул учеников к общению друг с другом. Они сами начали помогать новичкам. Это именно то комьюнити, о котором я мечтала.</p>
+                    <div class="author"><div class="avatar">И</div><div><strong>Ирина С.</strong><span>Основатель "Аркана.Школа"</span></div></div>
+                </div>
+                <div class="t-card">
+                    <p class="t-quote">Техническая часть больше не тормозит. Раньше платила за платформы, которые меняли условия. Теперь всё под моим контролем на стабильном GitHub. Спокойствие стоит дороже денег.</p>
+                    <div class="author"><div class="avatar">Л</div><div><strong>Лариса Д.</strong><span>Практикующий таролог, 6 лет</span></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-box" id="contact" aria-labelledby="cta-title">
+            <h2 id="cta-title">Время собрать знания в систему</h2>
+            <p>Не откладывайте запуск. Базовая версия бесплатна, установка занимает минуты, а поддержка всегда на связи. Начните с демо — посмотрите, как это работает изнутри.</p>
+            <div class="cta-actions">
+                <a href="https://feekool.github.io/tarot-school" target="_blank" class="btn btn-accent">👁️ Открыть демо</a>
+                <a href="https://github.com/feekool/feekool.github.io/issues" target="_blank" class="btn btn-outline">💬 Задать вопрос</a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>© Feekool Tarot Academy — экосистема для обучения таро на GitHub Pages.<br>Бесплатно. Открыто. Под вашим контролем.</p>
+            <div class="f-links">
+                <a href="https://feekool.github.io/tarot-school" target="_blank">👁️ Демо</a>
+                <a href="https://github.com/feekool/feekool.github.io" target="_blank">🐙 GitHub</a>
+                <a href="https://github.com/feekool/feekool.github.io/issues" target="_blank">💬 Поддержка</a>
+                <a href="#setup">📚 Инструкция</a>
+            </div>
+            <p style="margin-top: 16px;">
+                🌿 <strong>Ваша экспертиза заслуживает пространства, которое не ограничивает.</strong><br>
+                <a href="https://feekool.github.io/tarot-school" target="_blank" style="margin-top: 8px; display: inline-block;">✨ Запустить академию сегодня →</a>
+            </p>
+        </footer>
+    </div>
+
+    <div class="m-cta" role="navigation" aria-label="Быстрый доступ">
+        <a href="https://feekool.github.io/tarot-school" target="_blank" class="btn btn-primary">👁️ Открыть демо школы</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mCta = document.querySelector('.m-cta');
+            if (mCta) {
+                let last = 0, vis = false;
+                window.addEventListener('scroll', () => {
+                    const c = window.scrollY;
+                    if (c > 350 && c > last && !vis) { mCta.style.transform = 'translateY(0)'; mCta.style.opacity = '1'; vis = true; }
+                    else if (c < 120 && vis) { mCta.style.transform = 'translateY(100px)'; mCta.style.opacity = '0'; vis = false; }
+                    last = c;
+                }, { passive: true });
+            }
+
+            const els = document.querySelectorAll('.card, .format-card, .t-card, .steps-box');
+            const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){ x.target.style.opacity='1'; x.target.style.transform='translateY(0)'; io.unobserve(x.target); } }), { threshold: 0.1 });
+            els.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(16px)'; el.style.transition = 'opacity 0.4s ease, transform 0.4s ease'; io.observe(el); });
+        });
+    </script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"EducationalOrganization","name":"Feekool Tarot Academy","description":"Платформа для создания онлайн-школ таро на GitHub Pages. Модульные курсы, живое комьюнити, гибкий доступ — без серверов и кода.","url":"https://feekool.github.io/tarot-school","keywords":["обучение таро","курсы таро","школа тарологов","онлайн платформа для преподавателей","feekool таро","форум для учеников"]}
+    </script>
+</body>
+</html>
